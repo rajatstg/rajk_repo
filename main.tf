@@ -1,3 +1,17 @@
+resource "aws_eip" "eip_addr" {
+   count    = 2
+   instance = "${element(aws_instance.devops-2021.*.id,count.index)}"
+   vpc      = true
+   depends_on = [aws_internet_gateway.igw,aws_instance.devops-2021]
+}
+
+###resource "aws_eip_association" "eip_assoc" {
+#  count         = 2
+#  instance_id   = "${aws_instance.devops-2021[count.index].id}"
+#  allocation_id = aws_eip.eip_addr[count.index].id
+#  depends_on = [aws_eip.eip_addr,aws_instance.devops-2021]
+#}
+
 resource "aws_security_group" "terraform_sg" {
   name        = "terraform_sg"
   description = "Allow TLS inbound traffic"
