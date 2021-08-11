@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "devops-2021-12345"
+    bucket = "devopsbucket-new"
     key    = "demo/instance"
     region = "us-east-2"
   }

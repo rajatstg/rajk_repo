@@ -1,5 +1,6 @@
+
 resource "aws_eip" "eip_addr" {
-   count    = 2
+   count    = var.count_value
    instance = "${element(aws_instance.devops-2021.*.id,count.index)}"
    vpc      = true
    depends_on = [aws_internet_gateway.igw,aws_instance.devops-2021]
@@ -39,7 +40,7 @@ resource "aws_instance" "devops-2021" {
   subnet_id   = aws_subnet.subnet_demo.id
   vpc_security_group_ids = [aws_security_group.terraform_sg.id]
   tags = {
-    Name = "pradeep-terraform"
+    Name = "Raj-terraform"
   }
 }
 
@@ -66,7 +67,7 @@ resource "aws_vpc" "vpc_demo" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc_demo.id
   depends_on = [aws_vpc.vpc_demo]
-  
+
   tags = {
     Name = "demo-igw"
   }
@@ -90,7 +91,8 @@ resource "aws_default_route_table" "defroute_vpc_demo" {
      vpc_endpoint_id = ""
     }
   ]
-
+  depends_on = [aws_vpc.vpc_demo]
+  
   tags = {
     Name = "defroute_vpc_demo"
   }
